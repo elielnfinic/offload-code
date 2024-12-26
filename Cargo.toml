@@ -1,0 +1,2 @@
+[workspace]
+members = [ "offload-cli", "offload-lib", ]
