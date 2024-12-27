@@ -1,0 +1,33 @@
+name: Rust CI
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout repository
+          uses: actions/checkout@v3
+        - name: Set up Rust
+          uses: actions-rs/toolchain@v1
+          with:
+              toolchain: stable
+              override: true
+
+        - name: Install workspace dependencies
+          run: cargo fetch
+
+        - name: Run tests
+          run: cargo test --workspace --all-features
+
+        - name: Check formatting
+          run: cargo fmt -- --check
+
+        - name: Check for linting issues
+          run: cargo clippy --workspace --all-features -- -D warnings
