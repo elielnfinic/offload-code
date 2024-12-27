@@ -1,14 +1,30 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
+use std::fs;
+
+pub enum SupportedLanguages {
+    RUST,
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+pub fn get_delete_dir_name(language: SupportedLanguages) -> String {
+    match language {
+        SupportedLanguages::RUST => "target".to_string(),
+    }
+}
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+pub fn get_language_type(files: Vec<String>) -> Vec<SupportedLanguages> {
+    let mut supported_languages: Vec<SupportedLanguages> = Vec::new();
+
+    let _ = files.iter().map(|file_name| {
+        if file_name.to_lowercase().eq("cargo.toml") {
+            supported_languages.push(SupportedLanguages::RUST);
+        }
+    });
+
+    supported_languages
+}
+
+pub fn delete_folder(full_path : String) -> bool{
+    match fs::remove_dir(full_path) {
+        Ok(_) => true, 
+        Err(_) => false
     }
 }
