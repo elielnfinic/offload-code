@@ -4,20 +4,19 @@ use offload_lib::get_dir_size;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
-struct Args{
+struct Args {
     /// Code base directory path
     #[arg(short, long, default_value_t = String::from("."))]
-    path: String, 
+    path: String,
 
     /// Scans directories to report used storage
     #[arg(short, long, default_value_t = String::from("no"))]
-    scan: String, 
+    scan: String,
 
-    /// Programming language used 
+    /// Programming language used
     #[arg(short, long, default_value_t = String::from("rust"))]
-    lang: String
+    lang: String,
 }
-
 
 fn main() {
     env_logger::Builder::from_default_env()
@@ -25,12 +24,10 @@ fn main() {
         .init();
 
     let args = Args::parse();
-    let mut _path : String = args.path;
+    let mut _path: String = args.path;
 
     info!("Code base located at {}", _path);
 
     let y = get_dir_size("Cargo.toml".to_string());
     println!("The size of dir is {:?}", y);
 }
-
-

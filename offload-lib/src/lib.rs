@@ -25,10 +25,7 @@ pub fn get_language_type(files: Vec<String>) -> Vec<SupportedLanguages> {
 }
 
 pub fn delete_folder(full_path: String) -> bool {
-    match fs::remove_dir(full_path) {
-        Ok(_) => true,
-        Err(_) => false,
-    }
+    fs::remove_dir(full_path).is_ok()
 }
 
 #[derive(Debug, Clone)]
@@ -49,10 +46,7 @@ pub fn get_dir_size(full_path: String) -> DirSize {
         .into_iter()
         .filter_map(|e| e.ok())
     {
-        total_dir_size += match filesize::file_real_size(entry.path()) {
-            Ok(f) => f,
-            Err(_) => 0,
-        };
+        total_dir_size += filesize::file_real_size(entry.path()).unwrap_or_default();
     }
 
     DirSize {
@@ -61,13 +55,12 @@ pub fn get_dir_size(full_path: String) -> DirSize {
     }
 }
 
-
 #[cfg(test)]
-mod test{
+mod test {
     use crate::get_dir_size;
 
     #[test]
-    fn evaluate_file_size(){
+    fn evaluate_file_size() {
         let the_size = get_dir_size("Cargo.toml".to_string());
         assert!(the_size.size > 0);
     }
