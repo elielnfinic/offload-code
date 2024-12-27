@@ -24,7 +24,7 @@ jobs:
           run: cargo fetch
 
         - name: Run tests
-          run: cargo test --worksapce --all-features
+          run: cargo test --workspace --all-features
 
         - name: Check formatting
           run: cargo fmt -- --check
